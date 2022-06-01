@@ -24,6 +24,6 @@ jobs:
         with:
           context: ./WindowsImage/
           push: true
-          tags: ghcr.io/jimpaine/WindowsImage:1.0.${{ github.RUN_NUMBER }}
+          tags: ghcr.io/jimpaine/windowsimage:1.0.${{ github.RUN_NUMBER }}
           build-args: source=obj\Docker\empty
 
