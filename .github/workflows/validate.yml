@@ -1,10 +1,10 @@
-name: api
+name: WindowsImage
 
 on:
   push:
 
 jobs:
-  validate:
+  build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,4 +13,17 @@ jobs:
       - run: nuget restore
       - name: Build app for release
         run: msbuild WindowsImage.sln -verbosity:diag -property:Configuration=Release
+      - name: docker login
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and Push
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./WindowsImage/
+          push: true
+          tags: ghcr.io/jimpaine/WindowsImage:1.0.${{ github.RUN_NUMBER }}
+          build-args: source=obj\Docker\empty
 
