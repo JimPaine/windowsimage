@@ -4,12 +4,13 @@ on:
   push:
 
 jobs:
-  push-to-packages:
+  validate:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - name: setup msbuild
         uses: microsoft/setup-msbuild@v1.1
+      - run: nuget restore
       - name: Build app for release
-        run: msbuild WindowsImage.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+        run: msbuild WindowsImage.sln -verbosity:diag -property:Configuration=Release
 
