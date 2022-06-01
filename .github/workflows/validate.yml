@@ -16,6 +16,6 @@ jobs:
       - name: docker login
         run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
       - name: docker build
-        run: docker build --build-args "source=obj\Docker\empty" -t ghcr.io/jimpaine/windowsimage:1.0.${{ github.RUN_NUMBER }} ./WindowsImage/
+        run: docker build --build-arg "source=obj\Docker\empty" -t ghcr.io/jimpaine/windowsimage:1.0.${{ github.RUN_NUMBER }} ./WindowsImage/
 
 
