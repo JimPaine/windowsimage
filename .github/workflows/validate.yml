@@ -12,11 +12,12 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - run: nuget restore
       - name: Build app for release
-        run: msbuild WindowsImage.sln -verbosity:diag -property:Configuration=Release
+        run: msbuild WindowsImage.sln -verbosity:diag -property:Configuration=Release -property:OutDir=./obj/Docker/publish
+      - name: copy views
+        run: xcopy /E /Y /I ".\WindowsImage\obj\Docker\publish\_PublishedWebsites\WindowsImage\bin\Views\" ".\WindowsImage\obj\Docker\publish\_PublishedWebsites\WindowsImage\Views\"
       - name: docker login
         run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
       - name: docker build
-        working-directory: ./WindowsImage/
-        run: docker build --build-arg "source=obj\Docker\empty" -t ghcr.io/jimpaine/windowsimage:1.0.${{ github.RUN_NUMBER }} .
+        run: docker build -f .\WindowsImage\Dockerfile --build-arg "source=obj\Docker\publish\_PublishedWebsites\WindowsImage" -t ghcr.io/jimpaine/windowsimage:1.0.${{ github.RUN_NUMBER }} .\WindowsImage\
 
 
