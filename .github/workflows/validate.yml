@@ -1,0 +1,15 @@
+name: api
+
+on:
+  push:
+
+jobs:
+  push-to-packages:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup msbuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Build app for release
+        run: msbuild WindowsImage.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+
